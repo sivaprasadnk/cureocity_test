@@ -13,17 +13,13 @@ class DioClient {
 
   DioClient(this._dio, this._connectivity) {
     _dio
-      ..options = BaseOptions(
+      .options = BaseOptions(
         baseUrl: baseUrl,
         connectTimeout: const Duration(seconds: 10),
         receiveTimeout: const Duration(seconds: 10),
         headers: {'Content-Type': 'application/json'},
       )
-      ..interceptors.addAll([
-        _connectivityInterceptor(),
-        _retryInterceptor(),
-        // LogInterceptor(responseBody: true), // For debugging
-      ]);
+      ;
   }
 
   /// Retry Interceptor (for automatic retries)
@@ -89,7 +85,6 @@ class DioClient {
     return completer.future;
   }
 
-  /// ✅ Example GraphQL Query Request
   Future<Map<String, dynamic>?> query(
     String query, {
     Map<String, dynamic>? variables,
@@ -114,32 +109,42 @@ class DioClient {
     }
   }
 
-  /// ✅ Example GraphQL Mutation Request
-  Future<Map<String, dynamic>?> mutate(
-    String mutation, {
-    Map<String, dynamic>? variables,
-  }) async {
+  Future<List<Map<String, dynamic>>> searchCountry(String name) async {
     try {
       final response = await _dio.post(
         '',
-        data: {'query': mutation, 'variables': variables},
+        data: {
+          'query': '''
+          query GetCountry(\$name: String!) {
+            countries {
+              code
+              name
+              emoji
+            }
+          }
+        ''',
+          'variables': {'name': name},
+        },
       );
 
       if (response.statusCode == 200) {
-        return response.data['data'];
+        final data = response.data['data']['countries'] as List<dynamic>;
+
+        return data
+            .where(
+              (country) => (country['name'] as String).toLowerCase().contains(
+                name.toLowerCase(),
+              ),
+            )
+            .map((e) => e as Map<String, dynamic>)
+            .toList();
       } else {
-        throw Exception(
-          'GraphQL mutation failed with status code: ${response.statusCode}',
-        );
+        throw Exception('Failed to load country data');
       }
     } catch (e) {
-      print('GraphQL Mutation Error: $e');
-      return null;
-    }
+      throw Exception('Error fetching country: $e');
   }
 
-  /// Example GET request (optional)
-  Future<Response> getRequest(String endpoint) async {
-    return await _dio.get(endpoint);
   }
+
 }

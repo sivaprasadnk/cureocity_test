@@ -10,9 +10,19 @@ class CountryRepositoryImpl extends CountryRepository {
   CountryRepositoryImpl(this.remoteDatasource, this.localDataSource);
 
   @override
-  Future<Either<Exception, List<CountryModel>>> getCountries() async {
+  Future<Either<Exception, List<CountryModel>>> getCountriesOnline() async {
     try {
       final List<CountryModel> list = await remoteDatasource.getCountries();
+      return Right(list);
+    } catch (e) {
+      return Left(e as Exception);
+    }
+  }
+
+  @override
+  Future<Either<Exception, List<CountryModel>>> getCountriesOffline() async {
+    try {
+      final List<CountryModel> list = await localDataSource.getCountries();
       return Right(list);
     } catch (e) {
       return Left(e as Exception);
@@ -27,4 +37,33 @@ class CountryRepositoryImpl extends CountryRepository {
       throw Exception(err.toString());
     }
   }
+  
+  @override
+  Future<Either<Exception, List<CountryModel>>> searchCountriesOnline(
+    String name,
+  ) async {
+    try {
+      final List<CountryModel> list = await remoteDatasource.searchCountries(
+        name,
+      );
+      return Right(list);
+    } catch (e) {
+      return Left(e as Exception);
+    }
+  }
+
+  @override
+  Future<Either<Exception, List<CountryModel>>> searchCountriesOffline(
+    String name,
+  ) async {
+    try {
+      final List<CountryModel> list = await localDataSource.searchCountries(
+        name,
+      );
+      return Right(list);
+    } catch (e) {
+      return Left(e as Exception);
+    }
+  }
+  
 }
