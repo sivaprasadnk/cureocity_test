@@ -1,5 +1,3 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:country_app/core/locator.dart';
 import 'package:country_app/presentation/bloc/country_bloc/country_bloc.dart';
 import 'package:country_app/presentation/bloc/country_bloc/country_event.dart';
 import 'package:country_app/presentation/bloc/country_bloc/country_state.dart';
@@ -14,19 +12,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool isOnline = true;
   final TextEditingController _searchController = TextEditingController();
 
-  @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      locator<Connectivity>().onConnectivityChanged.listen((result) {
-        isOnline = !result.contains(ConnectivityResult.none);
-        setState(() {});
-      });
-    });
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
