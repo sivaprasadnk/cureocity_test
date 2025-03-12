@@ -16,7 +16,6 @@ class CountryBloc extends Bloc<CountryEvent, CountryState> {
   }
 
   getCountry(GetCountryEvent event, Emitter<CountryState> emit) async {
-
     emit(state.copyWith(loadingState: true, errorState: false));
     var connectivityResult = await Connectivity().checkConnectivity();
     bool isOnline = !connectivityResult.contains(ConnectivityResult.none);
@@ -44,19 +43,20 @@ class CountryBloc extends Bloc<CountryEvent, CountryState> {
             countryModelList: data,
           ),
         );
-        try {
-          await locator<AddToLocalDbUsecase>().call(data);
-        } catch (e) {
-          emit(
-            state.copyWith(
-              errorState: true,
-              error: 'Failed to save to local DB: ${e.toString()}',
-            ),
-          );
+        if (isOnline) {
+          try {
+            await locator<AddToLocalDbUsecase>().call(data);
+          } catch (e) {
+            emit(
+              state.copyWith(
+                errorState: true,
+                error: 'Failed to save to local DB: ${e.toString()}',
+              ),
+            );
+          }
         }
       },
     );
-  
   }
 
   searchCountry(SearchCountryEvent event, Emitter<CountryState> emit) async {

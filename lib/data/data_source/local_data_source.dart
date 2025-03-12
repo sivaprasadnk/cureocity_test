@@ -23,7 +23,7 @@ class LocalDataSourceImpl extends LocalDataSource {
     var list = <CountryModel>[];
     var box = await Hive.openBox<CountryModel>(countryBox);
     for (var country in box.values.toList()) {
-      if (name.contains(country.name!)) {
+      if (name.toLowerCase().contains(country.name!.toLowerCase())) {
         list.add(country);
       }
     }

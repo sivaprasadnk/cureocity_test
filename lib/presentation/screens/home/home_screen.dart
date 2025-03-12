@@ -72,6 +72,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     itemBuilder: (context, index) {
                       var item = state.countryList![index];
                       var title = "${item.name!} (${item.code})";
+                      // return Row(
+                      //   // mainAxisAlignment:,
+                      //   children: [
+                      //     Spacer(),
+                      //     Text(item.emoji!),
+                      //     Spacer(),
+                      //     Flexible(child: Text(title)),
+                      //   ],
+                      // );
                       return ListTile(
                         title: Text(title),
                         leading: Text(
