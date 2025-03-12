@@ -27,6 +27,9 @@ class LocalDataSourceImpl extends LocalDataSource {
         list.add(country);
       }
     }
+    if (name.isEmpty) {
+      return box.values.toList();
+    }
     return list;
   }
 
