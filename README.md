@@ -4,6 +4,5 @@
 2. Uses GetIt for dependency Injection
 3. Uses Hive for local caching
 
-## Getting Started
 
 
