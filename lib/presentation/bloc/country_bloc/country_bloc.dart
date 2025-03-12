@@ -16,7 +16,7 @@ class CountryBloc extends Bloc<CountryEvent, CountryState> {
 
   getCountry(GetCountryEvent event, Emitter<CountryState> emit) async {
     emit(state.copyWith(loadingState: true, errorState: false));
-    var connectivityResult = await Connectivity().checkConnectivity();
+    var connectivityResult = await locator<Connectivity>().checkConnectivity();
     bool isOnline = !connectivityResult.contains(ConnectivityResult.none);
 
     var response =

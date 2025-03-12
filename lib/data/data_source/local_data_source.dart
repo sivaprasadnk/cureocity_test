@@ -17,19 +17,23 @@ class LocalDataSourceImpl extends LocalDataSource {
       box.add(country);
     }
   }
-  
+
   @override
   Future<List<CountryModel>> searchCountries(String name) async {
-    var list = <CountryModel>[];
     var box = await Hive.openBox<CountryModel>(countryBox);
-    for (var country in box.values.toList()) {
-      if (name.toLowerCase().contains(country.name!.toLowerCase())) {
-        list.add(country);
-      }
-    }
+
     if (name.isEmpty) {
       return box.values.toList();
     }
+
+    var list =
+        box.values
+            .where(
+              (country) =>
+                  country.name!.toLowerCase().contains(name.toLowerCase()),
+            )
+            .toList();
+
     return list;
   }
 

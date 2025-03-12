@@ -15,7 +15,7 @@ final locator = GetIt.instance;
 void setup() {
   locator.registerSingleton<Dio>(Dio());
   locator.registerSingleton<Connectivity>(Connectivity());
-  locator.registerSingleton<DioClient>(DioClient(locator(), locator()));
+  locator.registerSingleton<DioClient>(DioClient(locator()));
 
   /// remote data source
   locator.registerSingleton<RemoteDatasourceImpl>(

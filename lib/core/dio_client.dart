@@ -1,17 +1,12 @@
 import 'dart:async';
 
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:country_app/core/constants.dart';
-import 'package:country_app/core/retry_interceptor.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class DioClient {
   final Dio _dio;
-  final Connectivity _connectivity;
 
-  DioClient(this._dio, this._connectivity) {
+  DioClient(this._dio) {
     _dio
       .options = BaseOptions(
         baseUrl: baseUrl,
@@ -22,68 +17,6 @@ class DioClient {
       ;
   }
 
-  /// Retry Interceptor (for automatic retries)
-  RetryInterceptor _retryInterceptor() {
-    return RetryInterceptor(
-      connectivity: _connectivity,
-      dio: _dio,
-      retryDelays: const [
-        Duration(seconds: 1),
-        Duration(seconds: 3),
-        Duration(seconds: 5),
-      ],
-    );
-  }
-
-  /// Interceptor to wait for internet connectivity before retrying failed requests
-  InterceptorsWrapper _connectivityInterceptor() {
-    return InterceptorsWrapper(
-      onError: (DioException e, handler) async {
-        if (_isNetworkError(e)) {
-          Fluttertoast.showToast(
-            msg: "No internet connection. Waiting for reconnection...",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0,
-          );
-          await _waitForInternet();
-          Fluttertoast.showToast(
-            msg: "Internet reconnected...",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            backgroundColor: Colors.green,
-            textColor: Colors.white,
-            fontSize: 16.0,
-          );
-          return handler.resolve(await _dio.fetch(e.requestOptions));
-        }
-        return handler.next(e);
-      },
-    );
-  }
-
-  /// Check if the error is due to no internet connection
-  bool _isNetworkError(DioException e) {
-    return e.type == DioExceptionType.connectionError ||
-        e.type == DioExceptionType.connectionTimeout;
-  }
-
-  /// Wait until connectivity is restored
-  Future<void> _waitForInternet() async {
-    StreamSubscription<List<ConnectivityResult>>? subscription;
-    final Completer<void> completer = Completer<void>();
-
-    subscription = _connectivity.onConnectivityChanged.listen((result) {
-      if (!result.contains(ConnectivityResult.none)) {
-        completer.complete();
-        subscription?.cancel();
-      }
-    });
-
-    return completer.future;
-  }
 
   Future<Map<String, dynamic>?> query(
     String query, {
