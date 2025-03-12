@@ -1,4 +1,6 @@
-class CountryModel {
+import 'package:hive_ce/hive.dart';
+
+class CountryModel extends HiveObject {
   String? code;
   String? name;
   String? emoji;

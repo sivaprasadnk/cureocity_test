@@ -1,3 +1,3 @@
 abstract class CountryEvent {}
 
-class AddCountryEvent extends CountryEvent {}
+class GetCountryEvent extends CountryEvent {}

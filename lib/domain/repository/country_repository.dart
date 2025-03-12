@@ -3,4 +3,5 @@ import 'package:dartz/dartz.dart';
 
 abstract class CountryRepository {
   Future<Either<Exception, List<CountryModel>>> getCountries();
+  Future addToLocalDB(List<CountryModel> countryList);
 }

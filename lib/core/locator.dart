@@ -17,7 +17,7 @@ void setup() {
   );
 
   locator.registerSingleton<CountryRepositoryImpl>(
-    CountryRepositoryImpl(locator()),
+    CountryRepositoryImpl(locator(), locator()),
   );
 
   locator.registerSingleton<GetCountryUsecase>(GetCountryUsecase(locator()));

@@ -1,4 +1,5 @@
 import 'package:country_app/presentation/bloc/country_bloc/country_bloc.dart';
+import 'package:country_app/presentation/bloc/country_bloc/country_event.dart';
 import 'package:country_app/presentation/bloc/country_bloc/country_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,26 +11,35 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Countries List')),
-      body: BlocBuilder<CountryBloc, CountryState>(
-        builder: (context, state) {
-          if (state.isLoading!) {
-            return Center(child: CircularProgressIndicator());
-          }
-          if (state.isError!) {
-            return Center(child: Text('Something went wrong!'));
-          }
-          if (state.countryList != null && state.countryList!.isEmpty) {
-            return Center(child: Text('No items!'));
-          }
-          return ListView.builder(
-            shrinkWrap: true,
-            itemCount: state.countryList!.length,
-            itemBuilder: (context, index) {
-              var item = state.countryList![index];
-              return ListTile(title: Text(item.name ?? " name"));
-            },
-          );
+      body: RefreshIndicator(
+        onRefresh: () async {
+          context.read<CountryBloc>().add(GetCountryEvent());
         },
+        child: BlocBuilder<CountryBloc, CountryState>(
+          builder: (context, state) {
+            if (state.isLoading!) {
+              return Center(child: CircularProgressIndicator());
+            }
+            if (state.isError!) {
+              return Center(child: Text('Something went wrong!'));
+            }
+            if (state.countryList != null && state.countryList!.isEmpty) {
+              return Center(child: Text('No items!'));
+            }
+            return ListView.builder(
+              shrinkWrap: true,
+              itemCount: state.countryList!.length,
+              itemBuilder: (context, index) {
+                var item = state.countryList![index];
+                var title = "${item.name!} (${item.code})";
+                return ListTile(
+                  title: Text(title),
+                  leading: Text(item.emoji!, style: TextStyle(fontSize: 24)),
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }
