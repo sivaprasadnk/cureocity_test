@@ -37,20 +37,7 @@ class CountryRepositoryImpl extends CountryRepository {
       throw Exception(err.toString());
     }
   }
-  
-  @override
-  Future<Either<Exception, List<CountryModel>>> searchCountriesOnline(
-    String name,
-  ) async {
-    try {
-      final List<CountryModel> list = await remoteDatasource.searchCountries(
-        name,
-      );
-      return Right(list);
-    } catch (e) {
-      return Left(e as Exception);
-    }
-  }
+ 
 
   @override
   Future<Either<Exception, List<CountryModel>>> searchCountriesOffline(

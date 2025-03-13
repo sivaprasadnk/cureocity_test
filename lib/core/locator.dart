@@ -7,7 +7,6 @@ import 'package:country_app/domain/use_cases/add_to_local_db_usecase.dart';
 import 'package:country_app/domain/use_cases/get_country_offline_usecase.dart';
 import 'package:country_app/domain/use_cases/get_country_online_usecase.dart';
 import 'package:country_app/domain/use_cases/search_country_offline_usecase.dart';
-import 'package:country_app/domain/use_cases/search_country_online_usecase.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 
@@ -38,9 +37,6 @@ void setup() {
   );
   locator.registerSingleton<SearchCountryOfflineUsecase>(
     SearchCountryOfflineUsecase(locator()),
-  );
-  locator.registerSingleton<SearchCountryOnlineUsecase>(
-    SearchCountryOnlineUsecase(locator()),
   );
   locator.registerSingleton<AddToLocalDbUsecase>(
     AddToLocalDbUsecase(locator()),

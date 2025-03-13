@@ -14,6 +14,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _searchController = TextEditingController();
 
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -59,15 +65,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     itemBuilder: (context, index) {
                       var item = state.countryList![index];
                       var title = "${item.name!} (${item.code})";
-                      // return Row(
-                      //   // mainAxisAlignment:,
-                      //   children: [
-                      //     Spacer(),
-                      //     Text(item.emoji!),
-                      //     Spacer(),
-                      //     Flexible(child: Text(title)),
-                      //   ],
-                      // );
                       return ListTile(
                         title: Text(title),
                         leading: Text(
