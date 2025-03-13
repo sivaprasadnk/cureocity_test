@@ -44,8 +44,12 @@ dependencies:
   fluttertoast: ^8.2.12
   hive_ce: ^2.10.1
   hive_ce_flutter:
+  freezed: ^3.0.3
+  freezed_annotation:
+  json_annotation: ^4.9.0
 
 dev_dependencies:
+  json_serializable: ^6.9.4
   build_runner: ^2.4.13
   hive_ce_generator: ^1.8.0
   flutter_test:

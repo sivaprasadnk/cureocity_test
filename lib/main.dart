@@ -1,6 +1,6 @@
 import 'package:country_app/core/constants.dart';
 import 'package:country_app/core/locator.dart';
-import 'package:country_app/data/model/country_model.dart';
+import 'package:country_app/data/entity/country_entity.dart';
 import 'package:country_app/hive/hive_adaptors.dart';
 import 'package:country_app/presentation/bloc/country_bloc/country_bloc.dart';
 import 'package:country_app/presentation/bloc/country_bloc/country_event.dart';
@@ -12,8 +12,8 @@ import 'package:hive_ce_flutter/hive_flutter.dart';
 void main() async {
   setup();
   await Hive.initFlutter();
-  Hive.registerAdapter(CountryModelAdapter());
-  await Hive.openBox<CountryModel>(countryBox);
+  Hive.registerAdapter(CountryEntityAdapter());
+  await Hive.openBox<CountryEntity>(countryBox);
 
   runApp(const MyApp());
 }

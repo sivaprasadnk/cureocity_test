@@ -3,13 +3,13 @@
 # Check in to version control
 nextTypeId: 1
 types:
-  CountryModel:
+  CountryEntity:
     typeId: 0
     nextIndex: 3
     fields:
       code:
         index: 0
-      name:
-        index: 1
       emoji:
+        index: 1
+      name:
         index: 2

@@ -1,8 +1,8 @@
 import 'package:country_app/core/dio_client.dart';
-import 'package:country_app/data/model/country_model.dart';
+import 'package:country_app/data/entity/country_entity.dart';
 
 abstract class RemoteDatasource {
-  Future<List<CountryModel>> getCountries();
+  Future<List<CountryEntity>> getCountries();
 }
 
 class RemoteDatasourceImpl extends RemoteDatasource {
@@ -10,7 +10,7 @@ class RemoteDatasourceImpl extends RemoteDatasource {
   RemoteDatasourceImpl(this.dio);
 
   @override
-  Future<List<CountryModel>> getCountries() async {
+  Future<List<CountryEntity>> getCountries() async {
     const String query = '''
     query {
       countries {
@@ -23,7 +23,7 @@ class RemoteDatasourceImpl extends RemoteDatasource {
     var response = await dio.query(query);
     if (response != null) {
       var list = response['countries'] as List;
-      var countryList = list.map((e) => CountryModel.fromJson(e)).toList();
+      var countryList = list.map((e) => CountryEntity.fromJson(e)).toList();
       return countryList;
     } else {
       return [];

@@ -1,5 +1,5 @@
-import 'package:country_app/data/model/country_model.dart';
 import 'package:country_app/data/repository/country_repository_impl.dart';
+import 'package:country_app/domain/model/country_model.dart';
 
 class AddToLocalDbUsecase {
   final CountryRepositoryImpl countryRepository;

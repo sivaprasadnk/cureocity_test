@@ -1,4 +1,4 @@
-import 'package:country_app/data/model/country_model.dart';
+import 'package:country_app/domain/model/country_model.dart';
 import 'package:dartz/dartz.dart';
 
 abstract class CountryRepository {
